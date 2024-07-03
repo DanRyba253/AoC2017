@@ -31,13 +31,13 @@ reverseFirst n (Loop xs off) =
     let firstN = take n xs
     in  Loop (reverse firstN ++ drop n xs) off
 
-reverseAndRotate :: Int -> Int -> Loop a -> Loop a
-reverseAndRotate len skipSize loop = loop
+reverseAndRotate :: Loop a -> (Int, Int) -> Loop a
+reverseAndRotate loop (len, skipSize) = loop
     & reverseFirst len
     & rotate (len + skipSize)
 
 reverseAndRotateAll :: [Int] -> Loop a -> Loop a
-reverseAndRotateAll lens loop = foldl (&) loop (zipWith reverseAndRotate lens [0..])
+reverseAndRotateAll lens loop = foldl reverseAndRotate loop (zip lens [0..])
 
 -- input lengths and the starting loop
 
